@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -59,5 +60,27 @@ public class RestApiConnect {
         HttpEntity<String> request = new HttpEntity<>(header);
 
         return restTemplate.exchange(url, HttpMethod.GET, request, t).getBody();
+    }
+
+    /*
+     * 단순 GET 요청을 가져온다.
+     * 쿠키값을 모두 돌려준다.
+     */
+    public Map<String, String> connectGetMethodCookieValues(String url) {
+        logger.debug("Connect Url ::: " + url);
+
+        Map<String, String> resultCookies = new HashMap<>();
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class);
+        HttpHeaders headers = response.getHeaders();
+        if (headers.containsKey(HttpHeaders.SET_COOKIE)) {
+            String cookies = headers.getFirst(HttpHeaders.SET_COOKIE);
+            for (String cookie : cookies.split(";")) {
+                String[] spilt = cookie.split("=");
+                String key = spilt[0];
+                String value = spilt[1];
+                resultCookies.put(key, value);
+            }
+        }
+        return resultCookies;
     }
 }
