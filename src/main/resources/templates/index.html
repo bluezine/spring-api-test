@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html :: fragment-head">
+</head>
+<body>
+<div class="container">
+    <div class="container">
+        <h2 class="form-signin-heading">청과물 검색</h2>
+        <br/>
+        <form class="form" th:action="@{/search}" th:object="${searchDto}" th:method="post" method="post">
+            <div class="form-group">
+                <label for="category">카테고리</label>
+                <select class="form-select" th:field="*{category}" id="category" aria-label="Default select">
+                    <option th:each="category : ${categories}" th:text="${category}" th:value="${category}"></option>
+                </select>
+                <p class="text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></p>
+            </div>
+            <div class="form-group">
+                <label for="name">검색</label>
+                <input type="text" class="form-control" th:field="*{name}" id="name"
+                       placeholder="Enter name">
+                <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">검색</button>
+            </div>
+        </form>
+    </div>
+    <br />
+    <div class="alert alert-primary" role="alert" th:if="${resultDto != null}">
+        <span th:text="${resultDto.category}"></span>에 속해있는 <span th:text="${resultDto.name}"></span>의 가격은 <span th:text="${resultDto.price}"></span>원 입니다.
+    </div>
+    <div class="alert alert-danger" role="alert" th:if="${error != null}" th:text="${error}"></div>
+</div>
+</body>
+</html>
+</body>
+</html>
