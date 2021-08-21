@@ -7,3 +7,6 @@ api:
   # fruit
   fruit:
     api-prefix: http://fruit.***.net
+# fruit
+  vegetable:
+    api-prefix: http://vegetable.***.net
