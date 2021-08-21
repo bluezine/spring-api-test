@@ -3,8 +3,10 @@ package kr.co.bluezine.springapitest.fruit;
 import kr.co.bluezine.springapitest.rest.RestApiConnect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * 과일가게 API - Service
@@ -17,6 +19,11 @@ public class FruitService {
      * 토큰 발급
      */
     private static final String TOKEN_URL = "/token";
+
+    /*
+     * 과일 목록
+     */
+    private static final String LIST_URL = "/product";
 
     private final RestApiConnect restApiConnect;
 
@@ -31,5 +38,21 @@ public class FruitService {
         FruitAuthDto authDto = restApiConnect.connectGetMethod(url, FruitAuthDto.class);
 
         return authDto.getAccessToken();
+    }
+
+    /*
+     * 과일 목록
+     */
+    public List<FruitDto> getFruitList() {
+        String url = apiRootUrl + LIST_URL;
+
+        List<FruitDto> fruitDtos = new ArrayList<>();
+
+        String accessToken = getAccessToken();
+        List<String> fruitArrayBefore = restApiConnect.connectGetMethodWithAccessToken(url, accessToken, List.class);
+        fruitArrayBefore.stream().forEach(item -> {
+            fruitDtos.add(FruitDto.builder().name(item).build());
+        });
+        return fruitDtos;
     }
 }
