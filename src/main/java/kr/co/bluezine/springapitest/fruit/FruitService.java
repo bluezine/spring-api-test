@@ -4,6 +4,7 @@ import kr.co.bluezine.springapitest.rest.RestApiConnect;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,11 @@ public class FruitService {
      * 과일 목록
      */
     private static final String LIST_URL = "/product";
+
+    /*
+     * 과일 가격
+     */
+    private static final String PRICE_URL = "/product?name=";
 
     private final RestApiConnect restApiConnect;
 
@@ -54,5 +60,18 @@ public class FruitService {
             fruitDtos.add(FruitDto.builder().name(item).build());
         });
         return fruitDtos;
+    }
+
+    /*
+     * 과일 가격
+     */
+    public FruitPriceDto getFruitPrice(String name) throws Exception {
+        if (StringUtils.isEmpty(name)) {
+            throw new Exception();
+        }
+        String url = apiRootUrl + PRICE_URL + name;
+
+        String accessToken = getAccessToken();
+        return restApiConnect.connectGetMethodWithAccessToken(url, accessToken, FruitPriceDto.class);
     }
 }

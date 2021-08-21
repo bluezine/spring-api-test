@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -43,5 +44,18 @@ class FruitServiceTest {
         });
 
         Assertions.assertTrue(fruitDtoList.size() > 0, "과일 목록이 존재하지 않음");
+    }
+
+    /*
+     * 과일 가격
+     */
+    @Test
+    void getFruitPrice() throws Exception {
+        Assertions.assertThrows(HttpClientErrorException.NotFound.class, () -> {
+            fruitService.getFruitPrice("존재안함");
+        }, "과일이 존재하지 않음.");
+
+        FruitPriceDto priceDto = fruitService.getFruitPrice("사과");
+        Assertions.assertTrue(priceDto.getPrice() > 0, "가격이 존재하지 않음");
     }
 }
