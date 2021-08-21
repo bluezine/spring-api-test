@@ -65,10 +65,7 @@ public class FruitService {
     /*
      * 과일 가격
      */
-    public FruitPriceDto getFruitPrice(String name) throws Exception {
-        if (StringUtils.isEmpty(name)) {
-            throw new Exception();
-        }
+    public FruitPriceDto getFruitPrice(String name) {
         String url = apiRootUrl + PRICE_URL + name;
 
         String accessToken = getAccessToken();

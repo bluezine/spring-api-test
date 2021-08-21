@@ -67,10 +67,7 @@ public class VegetableService {
     /*
      * 채소 가격
      */
-    public VegetablePriceDto getVegetablePrice(String name) throws Exception {
-        if (StringUtils.isEmpty(name)) {
-            throw new Exception();
-        }
+    public VegetablePriceDto getVegetablePrice(String name) {
         String url = apiRootUrl + PRICE_URL + name;
 
         String accessToken = getAccessToken();
