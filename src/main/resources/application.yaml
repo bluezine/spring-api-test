@@ -4,3 +4,6 @@ api:
   connect:
     connect-timeout: 5000
     read-timeout: 5000
+  # fruit
+  fruit:
+    api-prefix: http://fruit.***.net
